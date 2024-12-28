@@ -1,0 +1,28 @@
+<div id="popup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-lg w-full">
+        <button onclick="closePopup()" class="text-gray-500 float-right">✕</button>
+        <h2 class="text-xl font-bold"><span id="popup-word"></span></h2>
+        <p><span id="popup-ipa" class="text-gray-600"></span></p>
+        <p class="italic"><span id="popup-word-form"></span></p>
+        <p class="text-gray-700 mt-4"><strong>Meaning:</strong> <span id="popup-meaning"></span></p>
+        <p class="text-gray-700"><strong>Synonyms:</strong> <span id="popup-synonyms"></span></p>
+
+        <h3 class="mt-4 text-lg font-bold">Examples</h3>
+        <ul id="popup-examples" class="list-disc ml-5 text-gray-700"></ul>
+
+        <h3 class="mt-4 text-lg font-bold">Paragraph</h3>
+        <p id="popup-paragraph" class="text-gray-700"></p>
+        <p id="popup-paragraph-vn" class="text-gray-500 italic mt-2"></p>
+    </div>
+</div>
+{% block javascript %}
+<script>
+    function showPopup() {
+        document.getElementById('popup').classList.remove('hidden');
+    }
+
+    function closePopup() {
+        document.getElementById('popup').classList.add('hidden');
+    }
+</script>
+{% endblock %}

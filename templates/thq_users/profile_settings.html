@@ -1,0 +1,57 @@
+{% extends 'layouts/box.html' %}
+{% block head_title %}Cài đặt{% endblock %}
+{% block content %}
+
+<h1 class="mb-8">Cài đặt tài khoản</h1>
+
+<table class="w-full text-sm text-left text-gray-500">
+    <tbody>
+        <tr>
+            <th scope="row" class="pt-4 pb-1 text-base font-bold text-gray-900">
+                Email
+            </th>
+            <td id="email-address" class="pt-4 pb-1 pl-4">
+                {% if user.email %}{{ user.email }}{% else %}No Email{% endif %}
+            </td>
+            <td class="pt-4 pb-1 pl-4">
+                <a id="email-edit" class="cursor-pointer font-medium text-blue-600 hover:underline"
+                    hx-get="{% url 'profile-emailchange' %}"
+                    hx-target="#email-address"
+                    hx-swap="innerHTML" >
+                    Sửa
+                </a>
+            </td>
+        </tr>
+        <tr class="border-b">
+            <th scope="row" class="pb-4 font-medium text-gray-900">  
+            </th>
+            <td class="pb-4 pl-4">
+                {% if user.emailaddress_set.first.verified %}
+                <span class="text-green-500">Đã xác thực</span>{% else %}
+                <span class="text-amber-500">Chưa xác thực</span>
+                {% endif %}
+            </td>
+            <td class="pb-4 pl-4">
+                <a href="{% url 'profile-emailverify' %}" class="font-medium text-blue-600 hover:underline">
+                    {% if not user.emailaddress_set.first.verified %}Xác thực{% endif %}
+                </a>
+            </td>
+        </tr>
+
+        <tr class="border-b">
+            <th scope="row" class="py-4 text-base font-bold text-gray-900">
+                Xoá tài khoản
+            </th>
+            <td class="py-4 pl-4">
+                Sau khi xóa, tài khoản sẽ không thể tiếp tục truy cập.
+            </td>
+            <td class="py-4 pl-4">
+                <a href="{% url 'profile-delete' %}" class="font-medium text-red-600 hover:underline">
+                    Xóa
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
