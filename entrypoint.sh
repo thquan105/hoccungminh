@@ -26,4 +26,4 @@ except ObjectDoesNotExist:
 EOF
 
 # Khởi động server Django
-exec python manage.py runserver 0.0.0.0:${PORT}
+exec "$@"

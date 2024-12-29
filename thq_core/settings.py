@@ -22,9 +22,9 @@ if ENVIRONMENT == "development":
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('DOMAIN_URL', '*')]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'hoccungminh.onrender.com']
 
-CSRF_TRUSTED_ORIGINS = [ os.getenv('DOMAIN_URL', 'https://*') ]
+CSRF_TRUSTED_ORIGINS = [ 'https://hoccungminh.onrender.com' ]
 
 # Application definition
 
