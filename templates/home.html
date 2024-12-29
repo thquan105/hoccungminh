@@ -89,7 +89,13 @@
                     <li>Trò chuyện Chatbot</li>
                     <li>Làm kiểm tra, luyện tập</li>
                 </ul>
+                {% if request.user.is_authenticated %}
                 <button class="w-full bg-gray-400 text-white py-2 rounded-lg transition duration-300">Đã sở hữu</button>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 block text-center">
+                    Sở hữu ngay
+                </a>
+                {% endif %}
             </div>
             <div class="border rounded-lg p-8 text-center bg-blue-50 border-blue-200">
                 <h3 class="text-2xl font-bold mb-4">Chuyên nghiệp</h3>
