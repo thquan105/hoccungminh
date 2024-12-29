@@ -14,10 +14,13 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .vnpay import vnpay
+from dotenv import load_dotenv
+import os
 
-API_KEY = "AIzaSyAhWhe0LfJb8eSUnWBU5NO_hdJXvUNjvU4"
-MODEL_NAME = "gemini-1.5-flash"
+load_dotenv()
 
+API_KEY = os.getenv("API_KEY")
+MODEL_NAME = os.getenv("MODEL_NAME")
 
 def home_view(request):
     return render(request, "home.html")
