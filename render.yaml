@@ -1,0 +1,12 @@
+name: hoc-cung-minh
+
+services:
+  - type: web
+    name: my-app-service
+    env: docker
+    dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: "/app/entrypoint.sh"
+    plan: free
+    ports:
+      - 8000
