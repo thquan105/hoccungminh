@@ -5,6 +5,8 @@ services:
     name: my-app-service
     env: docker
     dockerfilePath: ./Dockerfile
+    buildCommand: ""
+    startCommand: "./entrypoint.sh"
     plan: free
     ports:
       - 8000
