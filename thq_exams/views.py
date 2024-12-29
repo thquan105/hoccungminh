@@ -6,6 +6,7 @@ from .models import DeThi, CauHoi, LuaChon, KetQua
 from django.contrib.auth.decorators import login_required
 from urllib.parse import parse_qs
 from .utils import check_and_reset_luot_tao
+from thq_users.decorators import email_verified_required
 import google.generativeai as genai
 import requests
 import json
@@ -19,6 +20,7 @@ API_KEY = os.getenv("API_KEY")
 MODEL_NAME = os.getenv("MODEL_NAME")
 
 @login_required
+@email_verified_required
 def test_index(request):
     deThis = DeThi.objects.filter(trangThai=True).order_by("-ngayTao")
     ket_quas = (
@@ -47,6 +49,7 @@ def test_index(request):
 
 
 @login_required
+@email_verified_required
 def practice_index(request):
     user = request.user
     profile = user.profile
@@ -61,6 +64,7 @@ def practice_index(request):
 
 
 @login_required
+@email_verified_required
 def delete_practice(request, deThi_id):
     if request.method == "POST":
         deThi = get_object_or_404(DeThi, deThi_id=deThi_id)
@@ -180,6 +184,7 @@ def prompt_to_test(typeQs, numQs, contentQs):
 
 
 @login_required
+@email_verified_required
 def practice_create(request):
     nguoi_dung = request.user
     profile = nguoi_dung.profile
@@ -219,6 +224,7 @@ def practice_create(request):
 
 
 @login_required
+@email_verified_required
 def practice_start(request, deThi_id):
     deThi = DeThi.objects.get(deThi_id=deThi_id)
     cauHois = CauHoi.objects.all().filter(deThi=deThi)
@@ -230,6 +236,7 @@ def practice_start(request, deThi_id):
 
 
 @login_required
+@email_verified_required
 def toggle_status(request, deThi_id):
     deThi = get_object_or_404(DeThi, deThi_id=deThi_id)
     deThi.trangThai = not deThi.trangThai
@@ -238,6 +245,7 @@ def toggle_status(request, deThi_id):
 
 
 @login_required
+@email_verified_required
 def submit_answers(request, deThi_id):
     if request.method == "POST":
         data = json.loads(request.body)
@@ -287,6 +295,7 @@ def submit_answers(request, deThi_id):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required
+@email_verified_required
 def submit_test(request, deThi_id):
     if request.method == "POST":
         deThi = DeThi.objects.get(deThi_id=deThi_id)
@@ -344,6 +353,7 @@ def submit_test(request, deThi_id):
     return JsonResponse({"error": "Invalid request"}, status=400)
 
 @login_required
+@email_verified_required
 def test_start(request, deThi_id):
     deThi = DeThi.objects.get(deThi_id=deThi_id)
     cauHois = CauHoi.objects.all().filter(deThi=deThi)
@@ -353,6 +363,7 @@ def test_start(request, deThi_id):
 
 
 @login_required
+@email_verified_required
 def vocab_search(request):
     if request.method != "POST":
         return JsonResponse({"response": "Invalid request"}, status=400)
@@ -406,6 +417,7 @@ def vocab_search(request):
     return JsonResponse(dt_vocab, status=200)
 
 @login_required
+@email_verified_required
 def history_view(request):
     user = request.user
     ketQuas = (
@@ -420,6 +432,7 @@ def history_view(request):
     return render(request, "thq_exams/test_history.html", {"ketQuas": ketQuas})
 
 @login_required
+@email_verified_required
 def test_result(request, ketQua_id):
     ketQua = get_object_or_404(KetQua, ketQua_id=ketQua_id)
 
