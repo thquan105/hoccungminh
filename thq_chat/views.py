@@ -4,7 +4,6 @@ from .models import CuocTroChuyen, TinNhan
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib import messages
-from thq_users.decorators import email_verified_required
 import google.generativeai as genai
 import requests
 import json
@@ -18,7 +17,6 @@ API_KEY = os.getenv("API_KEY")
 MODEL_NAME = os.getenv("MODEL_NAME")
 
 @login_required
-@email_verified_required
 def chat_index(request):
     if request.method == "POST":
         tenCuocTroChuyen = f"Cuộc trò chuyện {str(uuid.uuid4())[:8]}"
@@ -35,7 +33,6 @@ def chat_index(request):
     return render(request, "thq_chat/list_chats.html", {"chats": chats})
 
 @login_required
-@email_verified_required
 def chat_view(request, cuocTroChuyen_id):
     cuocTroChuyen = get_object_or_404(CuocTroChuyen, cuocTroChuyen_id=cuocTroChuyen_id)
     messages = TinNhan.objects.filter(cuocTroChuyen=cuocTroChuyen).order_by("ngayTao")
@@ -76,7 +73,6 @@ def convert_text(text):
 
 
 @login_required
-@email_verified_required
 def delete_chat(request, cuocTroChuyen_id):
     if request.method == "POST":
         chat = get_object_or_404(CuocTroChuyen, pk=cuocTroChuyen_id)
@@ -85,7 +81,6 @@ def delete_chat(request, cuocTroChuyen_id):
     return redirect("chat_index")
 
 @login_required
-@email_verified_required
 def response(request, cuocTroChuyen_id):
     if request.method != "POST":
         return JsonResponse({"response": "Invalid request"}, status=400)

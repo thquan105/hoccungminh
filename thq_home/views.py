@@ -14,7 +14,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .vnpay import vnpay
-from thq_users.decorators import email_verified_required
 from dotenv import load_dotenv
 import os
 
@@ -32,12 +31,10 @@ def hmacsha512(key, data):
     return hmac.new(byteKey, byteData, hashlib.sha512).hexdigest()
 
 @login_required
-@email_verified_required
 def payment_index(request):
     return render(request, "thq_payment/payment.html")
 
 @login_required
-@email_verified_required
 def payment(request):
     if request.method == "POST":
         order_type = "billpayment"
@@ -84,7 +81,6 @@ def payment(request):
         return render(request, "home.html")
 
 @login_required
-@email_verified_required
 def payment_return(request):
     inputData = request.GET
     if inputData:
@@ -154,7 +150,6 @@ def payment_return(request):
         )
 
 @login_required
-@email_verified_required
 def writing_view(request):
     nguoi_dung = request.user
     profile = nguoi_dung.profile
@@ -191,7 +186,6 @@ def prompt_1(text):
         Ensure all paragraphs from the given text are included in the JSON structure, following this template. The aim is to facilitate a comprehensive analysis and enhancement of the text, making it more engaging and understandable to a wider audience."""
 
 @login_required
-@email_verified_required
 def writing_evaluate(request):
     if request.method == "POST":
         text = request.POST.get("inputText").strip()
