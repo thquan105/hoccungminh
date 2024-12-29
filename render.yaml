@@ -9,4 +9,4 @@ services:
     startCommand: "./entrypoint.sh"
     plan: free
     ports:
-      - 8000
+      - 10000
