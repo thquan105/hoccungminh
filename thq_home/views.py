@@ -191,7 +191,7 @@ def writing_evaluate(request):
         text = request.POST.get("inputText").strip()
 
         inputUser = prompt_1(text)
-        inputUser2 = f"""Generate a JSON structure for the given paragraph: {text}"""
+        inputUser2 = f"""Generate a JSON structure for the given English paragraph: {text}"""
 
         dt_response = {}
         dt_response_2 = {}

@@ -4,11 +4,21 @@ window.addEventListener('scroll', function () {
     const header = document.getElementById('header');
     const scrollY = window.scrollY || window.pageYOffset;
 
-    if (scrollY > 0) {
+    if (scrollY > 20) {
         header.classList.add('fixed');
     } else {
         header.classList.remove('fixed');
     }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuButton = document.querySelector('#menuButton');
+    const navMenu = document.querySelector('#navMenu');
+
+    menuButton.addEventListener('click', function () {
+        navMenu.classList.toggle('hidden');
+        navMenu.classList.toggle('block');
+    });
 });
 
 function getCookie(name) {
