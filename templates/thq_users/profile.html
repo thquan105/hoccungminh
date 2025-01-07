@@ -17,22 +17,22 @@
         {% endif %}
     </div>
     <div class="max-w-5xl rounded p-6 flex flex-wrap justify-center">
-        <div class="w-full mb-10 flex flex-wrap gap-[16px] justify-center">
-            <div id="chart1" class="w-[calc(50%-16px)]">
-                <div class="text-lg font-semibold mb-4">Thống kê: Điểm Trung Bình</div>
+        <div class="w-full mb-10 flex flex-col md:flex-row flex-wrap gap-[16px] justify-center">
+            <div id="chart1" class="w-full md:w-[calc(50%-16px)]">
+                <div class="text-base md:text-lg font-semibold mb-4">Thống kê: Điểm Trung Bình</div>
                 <div class="bg-indigo-500 p-5 rounded-lg">
                     <canvas id="lineChart" class="w-full"></canvas>
                 </div>
             </div>
-            <div id="chart2" class="w-[calc(50%-16px)]">
-                <div class="text-lg font-semibold mb-4">Thống kê: Số lần thi theo ngày</div>
+            <div id="chart2" class="w-full md:w-[calc(50%-16px)]">
+                <div class="text-base md:text-lg font-semibold mb-4">Thống kê: Số lần thi theo ngày</div>
                 <div class="bg-blue-500 p-5 rounded-lg">
                     <canvas id="heatmap" class="w-full"></canvas>
                 </div>
             </div>
         </div>
         <div id="chart3">
-            <h2 class="text-lg font-semibold mb-4">Thống kê: Phân khúc điểm</h2>
+            <h2 class="text-base md:text-lg font-semibold mb-4">Thống kê: Phân khúc điểm</h2>
             <div class="bg-green-500 p-5 rounded-lg">
                 <canvas id="pieChart" class="w-full"></canvas>
             </div>
