@@ -14,10 +14,15 @@ window.addEventListener('scroll', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const menuButton = document.querySelector('#menuButton');
     const navMenu = document.querySelector('#navMenu');
+    const menuIcon = document.querySelector('#menuIcon');
+    const closeIcon = document.querySelector('#closeIcon');
 
     menuButton.addEventListener('click', function () {
         navMenu.classList.toggle('hidden');
         navMenu.classList.toggle('block');
+
+        menuIcon.classList.toggle('hidden');
+        closeIcon.classList.toggle('hidden');
     });
 });
 
