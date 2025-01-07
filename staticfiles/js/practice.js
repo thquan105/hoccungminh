@@ -67,6 +67,7 @@ document.getElementById('quiz_form').addEventListener('submit', function (event)
         });
 
 });
+
 document.getElementById('doan_van').addEventListener('dblclick', function (event) {
     const selection = window.getSelection().toString().trim();
     if (selection && selection !== " ") {
