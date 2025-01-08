@@ -22,10 +22,21 @@ docker compose up -d
 docker-compose build --no-cache
 ```
 
+<br>
+
+##### Collecting Static Files
+```
+python manage.py collectstatic
+```
+
+<br>
+
 ##### VNpay Dashboard test
 ```
 https://sandbox.vnpayment.vn/merchantv2/Home/Dashboard.htm
 ```
+
+<br>
 
 ##### Card test
 ```
@@ -35,5 +46,3 @@ Tên chủ thẻ	NGUYEN VAN A
 Ngày phát hành	07/15
 Mật khẩu OTP	123456
 ```
-
-python manage.py collectstatic
