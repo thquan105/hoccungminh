@@ -2,7 +2,7 @@
 
 Website: [Hoccungminh](https://hoccungminh.onrender.com/)
 
-![](https://prnt.sc/C7xx7TMojeAG)
+![](./static/images/intro.jpg)
 
 ## Mục lục
 - [Giới thiệu](#giới-thiệu)
