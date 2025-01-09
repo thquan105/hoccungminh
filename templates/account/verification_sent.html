@@ -1,0 +1,14 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth %}
+{% block head_title %}
+    {% trans "Xác minh địa chỉ email của bạn" %}
+{% endblock head_title %}
+{% block content %}
+    {% element h1 %}
+        {% trans "Xác minh địa chỉ email của bạn" %}
+    {% endelement %}
+    {% element p %}
+        {% blocktrans %}Chúng tôi đã gửi một email đến bạn để xác minh. Vui lòng làm theo liên kết trong email để hoàn tất quá trình đăng ký. Nếu bạn không thấy email xác minh trong hộp thư chính, hãy kiểm tra trong thư mục spam. Vui lòng liên hệ với chúng tôi nếu bạn không nhận được email xác minh trong vòng vài phút.{% endblocktrans %}
+    {% endelement %}
+{% endblock content %}
