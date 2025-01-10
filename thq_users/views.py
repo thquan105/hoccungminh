@@ -51,7 +51,8 @@ def profile_view(request, username=None):
     }
 
     pie_data = (
-        KetQua.objects.annotate(
+        KetQua.objects.filter(nguoiDung=nguoiDung)
+        .annotate(
             category=Case(
                 When(diemSo__lte=40, then=Value("Thấp")),
                 When(diemSo__lte=70, then=Value("Trung Bình")),
