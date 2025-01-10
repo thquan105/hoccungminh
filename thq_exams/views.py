@@ -236,11 +236,10 @@ def practice_create(request):
 @login_required
 def practice_start(request, deThi_id):
     deThi = DeThi.objects.get(deThi_id=deThi_id)
-    cauHois = CauHoi.objects.all().filter(deThi=deThi)
+    cauHois = CauHoi.objects.filter(deThi=deThi).order_by('?')
     response = render(
         request, "thq_exams/practice_page.html", {"deThi": deThi, "cauHois": cauHois}
     )
-    response.set_cookie("deThi_id", deThi.deThi_id)
     return response
 
 
@@ -361,11 +360,10 @@ def submit_test(request, deThi_id):
 @login_required
 def test_start(request, deThi_id):
     deThi = DeThi.objects.get(deThi_id=deThi_id)
-    cauHois = CauHoi.objects.all().filter(deThi=deThi)
+    cauHois = CauHoi.objects.filter(deThi=deThi).order_by('?')
     return render(
         request, "thq_exams/test_page.html", {"deThi": deThi, "cauHois": cauHois}
     )
-
 
 @login_required
 def vocab_search(request):
