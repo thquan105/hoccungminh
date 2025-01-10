@@ -12,6 +12,7 @@ import json
 import uuid
 from dotenv import load_dotenv
 import os
+import random
 
 load_dotenv()
 
@@ -88,22 +89,35 @@ def save_question(json_data, user=None):
             if correct_answer not in ["A", "B", "C", "D"]:
                 raise ValueError(f"Invalid correct answer: {correct_answer}")
 
+            answers = [
+                options[0] if len(options) > 0 else "",
+                options[1] if len(options) > 1 else "",
+                options[2] if len(options) > 2 else "",
+                options[3] if len(options) > 3 else "",
+            ]
+            correct_answer_content = answers[ord(correct_answer) - ord("A")]
+
+            random.shuffle(answers)
+
+            new_correct_index = answers.index(correct_answer_content)
+            new_correct_answer = chr(new_correct_index + ord("A"))
+
             questions_to_create.append(
                 CauHoi(
                     deThi=deThi,
                     noiDung=question.get("question", ""),
-                    dapAnA=options[0] if len(options) > 0 else "",
-                    dapAnB=options[1] if len(options) > 1 else "",
-                    dapAnC=options[2] if len(options) > 2 else "",
-                    dapAnD=options[3] if len(options) > 3 else "",
-                    dapAnDung=correct_answer,
+                    dapAnA=answers[0],
+                    dapAnB=answers[1],
+                    dapAnC=answers[2],
+                    dapAnD=answers[3],
+                    dapAnDung=new_correct_answer,
                     giaiThich=question.get("explanation", ""),
                 )
             )
 
         CauHoi.objects.bulk_create(questions_to_create)
 
-        deThi.thoiGian = len(questions_to_create) * 2 + 5
+        deThi.thoiGian = len(questions_to_create) * 1 + 5
         deThi.save()
 
     except Exception as e:
@@ -114,7 +128,7 @@ def save_question(json_data, user=None):
 
 def prompt_to_test(typeQs, numQs, contentQs):
     typeQuestion = typeQs == "1"
-    questionType = "reading comprehension" if typeQuestion else "multiple-choice"
+    questionType = "reading comprehension" if typeQuestion else "multiple-choice and fill-in-the-blank"
     reading_passage = require = ""
     if typeQuestion:
         reading_passage = '"reading_passage": "... (Optional reading passage, A passage containing more than 3 paragraphs and at 750 words, if required)",'
@@ -129,10 +143,11 @@ def prompt_to_test(typeQs, numQs, contentQs):
     - goal: Help learners improve their English skills, understand grammar, vocabulary.
     - language: English
     *requirements:
-    - difficulty: medium
+    - difficulty: random
     {require}
     - purpose of explanation: make English learning clear, practical, and enjoyable for Vietnamese learners
-    - answer_count: 4            
+    - content-oriented: The questions must align with English learning, focusing on skills such as vocabulary, grammar, reading comprehension, listening, and using the language in real-life situations.
+    - answer_count: 4 
     *output:
     {{ 
         "exam_name": "... (Generate a name for the exam (maximum 10 words) based on the provided content in Vietnamese)",
