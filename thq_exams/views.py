@@ -131,7 +131,7 @@ def prompt_to_test(typeQs, numQs, contentQs):
     questionType = "reading comprehension" if typeQuestion else "multiple-choice and fill-in-the-blank"
     reading_passage = require = ""
     if typeQuestion:
-        reading_passage = '"reading_passage": "... (Optional reading passage in English, A passage containing more than 3 paragraphs and at 900 words)",'
+        reading_passage = '"reading_passage": "... (Optional reading passage in English. Use <br/> to separate the paragraphs. The passage length is determined by the number of questions - from 600 to 1,200 words and typically spanning 2 to 3 paragraphs.)",'
         require = "- question content: based on the passage"
 
     prompt = f"""
