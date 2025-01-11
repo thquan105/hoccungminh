@@ -16,7 +16,7 @@
         {% if deThi.doanVan %}
         <div class="w-full md:w-5/12 text-justify">
             <div class="pr-2 overflow-y-auto max-h-[70vh]">
-                <p class="text-sm md:text-base" translate="no"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan }}</p>
+                <p class="text-sm md:text-base" translate="no"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan|safe }}</p>
             </div>
         </div>
         {% endif %}

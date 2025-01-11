@@ -53,7 +53,7 @@
         {% if deThi.doanVan %}
         <div class="w-full md:w-1/2 text-justify">
             <div class="overflow-y-auto max-h-[70vh]">
-                <p class="mr-2 text-sm md:text-base" translate="no" id="doan_van"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan }}</p>
+                <p class="mr-2 text-sm md:text-base" translate="no" id="doan_van"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan|safe }}</p>
             </div>
             <p class="pt-4 hidden md:block"><strong>Mẹo:&nbsp;</strong>Double Click để dịch nghĩa từ vựng!</p>
         </div>
