@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Chạy migrations để cập nhật database
+python manage.py makemigrations
 python manage.py migrate
 
 # Kiểm tra nếu superuser đã tồn tại, nếu chưa thì tạo mới
