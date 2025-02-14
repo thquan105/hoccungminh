@@ -52,8 +52,14 @@ graph LR
 git clone <repository-url>
 cd <project-folder>
 ```
+### 2. Build and run docker container
 
-### 2. Cấu trúc thư mục
+```bash
+docker-compose build
+docker compose up -d
+```
+
+### 3. Cấu trúc thư mục
 
 ```
 .
@@ -75,7 +81,7 @@ cd <project-folder>
 
 ```
 
-### 3. .env.sample
+### 4. .env.sample
 
 ```env
 ENVIRONMENT=
@@ -102,7 +108,7 @@ DJANGO_SUPERUSER_EMAIL=
 DJANGO_SUPERUSER_PASSWORD=
 ```
 
-### 4. entrypoint
+### 5. entrypoint
 
 ```sh
 #!/bin/sh
@@ -116,7 +122,7 @@ python manage.py createsuperuser --noinput
 python manage.py runserver 0.0.0.0:8000 
 ```
 
-### 5. Docker Compose
+### 6. Docker Compose
 
 ```yaml
 name: hoc-cung-minh
