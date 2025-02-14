@@ -1,5 +1,6 @@
 ﻿# Hướng dẫn Triển khai Website luyện tập và kiểm tra tiếng Anh
 
+Đã Deploy trên Render - server sẽ down sau 1 khoảng thời gian không có request dẫn đến việc truy cập lần đầu sẽ mất nhiều thời gian hơn.
 Website: [Hoccungminh](https://hoccungminh.onrender.com/)
 
 ![](./static/images/intro.jpg)
