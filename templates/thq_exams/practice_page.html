@@ -1,0 +1,100 @@
+{% extends 'layouts/blank.html' %}
+{% load static %}
+{% block head_title %}Luyện tập{% endblock %}
+{% block style %}
+<style>
+    .question_block {
+        margin-bottom: 1.5rem;
+        margin-right: 0.5rem;
+        padding: 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        background-color: #F5F5F5;
+    }
+
+    .option {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        transition: background-color 0.2s, border-color 0.2s;
+        cursor: pointer;
+    }
+
+    .option:hover {
+        background-color: #fff;
+        border-color: #adb5bd;
+    }
+
+    .option input {
+        margin-right: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="quiz_container h-[calc(100vh-80px)] pt-4 px-8 bg-white">
+    <div class="flex items-center justify-between bg-white rounded-md mb-4 gap-2">
+        <a class="px-4 py-2 bg-blue-500 rounded-3xl text-white hover:bg-blue-700" href="{% url 'practice_index' %}"><i class="fa-solid fa-angle-left"></i></a>
+        <div>
+            <h1 class="text-base md:text-lg font-semibold mb-0 text-center">{{ deThi.tenDeThi }}</h1>
+            <p class="text-sm text-center mb-0">Số câu: <strong id="soCauHoi">{{ cauHois|length }}</strong> câu</p>
+        </div>
+        <div class="flex flex-col md:flex-row items-center">
+            <p class="text-sm md:text-lg mb-0 mr-4 font-bold" id="quiz-result"></p>
+            <button id="reset_btn"
+                class="md:px-6 md:py-4 px-4 py-2 bg-green-500 text-white md:text-base text-sm font-bold rounded-lg shadow-lg transition-all cursor-pointer hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-300 hidden">
+                Làm lại
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-col md:flex-row gap-6 max-w-screen-2xl mx-auto">
+        {% if deThi.doanVan %}
+        <div class="w-full md:w-1/2 text-justify">
+            <div class="overflow-y-auto max-h-[70vh]">
+                <p class="mr-2 text-sm md:text-base" translate="no" id="doan_van"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan }}</p>
+            </div>
+            <p class="pt-4 hidden md:block"><strong>Mẹo:&nbsp;</strong>Double Click để dịch nghĩa từ vựng!</p>
+        </div>
+        {% endif %}
+        <div class="w-full md:w-1/2 mx-auto md:mb-0 mb-10">
+            <form id="quiz_form" autocomplete="off" method="POST">
+                <div id="question_blocks" class="overflow-y-auto max-h-[70vh]">
+                    {% for cauHoi in cauHois %}
+                    <div class="question_block">
+                        <p class="question_text md:text-base text-sm font-bold">{{ forloop.counter }}. {{ cauHoi.noiDung }}</p>
+                        <div class="mb-2" id="{{ cauHoi.cauHoi_id }}">
+                            <label class="option md:text-base text-sm">
+                                <input type="radio" class="w-auto" name="{{ cauHoi.cauHoi_id }}" value="A" required>
+                                {{ cauHoi.dapAnA }}
+                            </label>
+                            <label class="option md:text-base text-sm">
+                                <input type="radio" class="w-auto" name="{{ cauHoi.cauHoi_id }}" value="B">
+                                {{ cauHoi.dapAnB }}
+                            </label>
+                            <label class="option md:text-base text-sm">
+                                <input type="radio" class="w-auto" name="{{ cauHoi.cauHoi_id }}" value="C">
+                                {{ cauHoi.dapAnC }}
+                            </label>
+                            <label class="option md:text-base text-sm">
+                                <input type="radio" class="w-auto" name="{{ cauHoi.cauHoi_id }}" value="D">
+                                {{ cauHoi.dapAnD }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="text-center">
+                    <button type="submit" id="submit_btn" class="mt-6 md:text-base text-sm">Nộp bài</button>
+                </div> 
+            </form>
+        </div>
+    </div>
+</div>
+{% include 'thq_exams/vocab_popup.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/practice.js' %}"></script>
+{% endblock %}

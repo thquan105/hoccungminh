@@ -1,0 +1,61 @@
+{% extends 'layouts/blank.html' %}
+{% load static %}
+{% block head_title %}Kiểm tra{% endblock %}
+{% block content %}
+<div class="flex flex-col md:flex-row max-w-screen-2xl mx-auto mb-14">
+    {% if deThis %}
+    <div class="w-full md:w-1/2 mt-10 p-10">
+        <h1 class="text-base md:text-2xl text-center font-bold mb-10">Danh sách bài kiểm tra</h1>
+        <ul class="rounded-lg overflow-hidden overflow-y-auto max-h-[60vh] mx-auto">
+            {% for deThi in deThis %}
+            <li class="mb-2 shadow sm:rounded-md">
+                <div class="flex flex-wrap gap-4 justify-center text-lg">
+                    <a href="{% url 'test_start' deThi.deThi_id %}"
+                        class="text-sm md:text-lg bg-white hover:bg-gray-200 flex-grow text-black border-l-8 {% cycle 'border-green-500' 'border-purple-800' %} rounded-md px-3 py-2 w-full">
+                        {{ deThi.tenDeThi }}
+
+                        <div class="text-gray-500 font-thin text-sm pt-1">
+                            <span>Tạo bởi: @{{ deThi.nguoiTao }}</span>
+                        </div>
+                    </a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <div class="w-full md:w-1/2 mx-auto mt-10 p-10">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-base md:text-2xl font-bold mb-0">Bảng xếp hạng điểm</h1>
+            <a class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 text-sm md:text-base rounded inline-flex items-center" href="{% url 'history_view' %}"><i class="fa-solid fa-clock-rotate-left pr-2"></i>Lịch sử</a>
+        </div>
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <table class="table-auto w-full text-left">
+                <thead class="bg-blue-200 text-sm md:text-base">
+                    <tr>
+                        <th class="px-4 py-2">Xếp Hạng</th>
+                        <th class="px-4 py-2">Người Dùng</th>
+                        <th class="px-4 py-2">Số Câu Đã Làm</th>
+                        <th class="px-4 py-2">Điểm Trung Bình</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in xep_hang %}
+                    <tr class="{% cycle 'bg-blue-50' 'bg-white' %}">
+                        <td class="px-4 py-2">{{ forloop.counter }}</td>
+                        <td class="px-4 py-2"><a href="{% url 'profile' user.nguoi_dung %}">{{ user.nguoi_dung }}</a></td>
+                        <td class="px-4 py-2">{{ user.so_cau }}</td>
+                        <td class="px-4 py-2">{{ user.diem_tb|floatformat:2 }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center px-4 py-2">Không có dữ liệu</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}

@@ -1,0 +1,142 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Luyện tập{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="flex flex-col md:flex-row max-w-screen-2xl mx-auto mb-14">
+    {% if deThis %}
+    <div class="w-full md:w-1/2 md:mt-10 p-10">
+        <h1 class="text-lg md:text-2xl text-center font-bold mb-10">Danh sách kiểm tra đã tạo</h1>
+        <ul class="rounded-lg overflow-hidden overflow-y-auto max-h-[60vh] mx-auto">
+            {% for deThi in deThis %}
+            <li class="mb-2 shadow sm:rounded-md">
+                <div class="{% cycle 'bg-blue-50' 'bg-white' %} px-4 py-5 sm:px-6 border-cyan-800 border-2 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <a href="{% url 'practice_start' deThi.deThi_id %}"
+                            class="text-sm md:text-lg leading-6 font-medium text-gray-900 hover:text-cyan-500">
+                            {{ deThi.tenDeThi }}
+                        </a>
+                        <div class="flex items-center space-x-2">
+                            <button onclick='toggleStatus("{{ deThi.deThi_id }}")' class="px-2 py-1 text-sm rounded-md border-2
+                                {% if deThi.trangThai %}bg-green-100 text-green-800 border-green-200{% else %}bg-rose-100 text-gray-800 border-rose-200{% endif %}">
+                                {% if deThi.trangThai %}Public{% else %}Private{% endif %}
+                            </button>
+                            <form action="{% url 'delete_practice' deThi.deThi_id %}" method="post"
+                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài kiểm tra này không?');">
+                                {% csrf_token %}
+                                <button aria-label="Delete conversation"
+                                    class="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="pt-4"><strong>Lưu ý:&nbsp;</strong>Để <span class="text-green-600">public</span> để chia sẻ cho mọi người!</p>
+    </div>
+    {% endif %}
+    <div class="w-full md:w-1/2 mx-auto md:mt-10 p-10">
+        <h1 class="text-lg md:text-2xl text-center font-bold mb-10">Trình tạo câu hỏi tiếng Anh AI</h1>
+        {% if not request.user.profile.is_premium %}
+        <p class="text-center text-gray-600 text-sm md:text-base">Bạn còn {{ luotConLai }} lượt tạo</p>
+        {%  endif %}
+        <form method="POST" action="{% url 'practice_create' %}" class="flex flex-col mx-auto gap-2 max-w-xl"
+            onsubmit="showLoading()">
+            {% csrf_token %}
+            <fieldset class="contents">
+                <div class="flex flex-col mb-4">
+                    <textarea name="inputText" id="inputText" rows="5" maxlength="256" required=""
+                        placeholder="Tạo câu hỏi về thì quá khứ đơn... [Tối đa 256 từ]"
+                        class="rounded-lg p-4 bg-black/5 border-2 border-solid border-black/10 font-mono font-medium text-sm"></textarea>
+                </div>
+                <div class="flex items-center mb-4">
+                    <input id="typeQuestions" type="checkbox" value="1" name="typeQuestions"
+                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"></input>
+                    <label for="typeQuestions" class="block ms-2 text-base font-medium text-gray-900">Loại câu đọc
+                        hiểu</label>
+                </div>
+                <div class="flex mb-4 items-center">
+                    <label for="numQuestions" class="block mb-2 pr-4 text-base font-medium text-gray-900">Số câu
+                        hỏi:</label>
+                    <div class="relative">
+                        <input type="number" id="numQuestions" name="numQuestions"
+                            class="block p-2.5 w-full z-20 text-base text-gray-900 bg-gray-50 rounded-e-lg border-s-5 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Số câu" value="10" min="5" max="20" required />
+                    </div>
+                </div>
+                <div class="relative mb-6">
+                    <input id="number-range-input" type="range" value="10" min="5" max="20"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <span class="text-sm text-gray-500 absolute start-0 -bottom-6">Min (5)</span>
+                    <span
+                        class="text-sm text-gray-500 absolute start-1/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">10</span>
+                    <span
+                        class="text-sm text-gray-500 absolute start-2/3 -translate-x-1/2 rtl:translate-x-1/2 -bottom-6">15</span>
+                    <span class="text-sm text-gray-500 absolute end-0 -bottom-6">Max (20)</span>
+                </div>
+                <button type="submit"
+                    class="rounded-lg p-3 bg-green-500/20 border-2 border-solid border-green-500/20 transition-colors font-medium text-base leading-none"><svg
+                        xmlns="http://www.w3.org/2000/svg" class="inline" viewBox="0 0 24 24" fill="currentColor"
+                        width="18" height="18">
+                        <path fill-rule="evenodd"
+                            d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <span class="font-bold">Tạo Câu Hỏi!</span>
+                </button>
+            </fieldset>
+        </form>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script>
+    var rangeInput = document.getElementById('number-range-input');
+    var numQuestions = document.getElementById('numQuestions');
+
+    function updateNumQuestions() {
+        numQuestions.value = rangeInput.value;
+    }
+    function updateRangeInput() {
+        rangeInput.value = numQuestions.value;
+    }
+
+    rangeInput.addEventListener('input', updateNumQuestions);
+    numQuestions.addEventListener('input', updateRangeInput);
+
+    function toggleStatus(deThiId) {
+        console.log(deThiId);
+        fetch(`/toggle-status/${deThiId}/`, {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const button = document.querySelector(`button[onclick='toggleStatus("${deThiId}")']`);
+                    if (data.new_status) {  // true = public
+                        button.classList.remove('bg-rose-100', 'text-gray-800', 'border-rose-200');
+                        button.classList.add('bg-green-100', 'text-green-800', 'border-green-200');
+                        button.textContent = 'Public';
+                    } else {  // false = private
+                        button.classList.remove('bg-green-100', 'text-green-800', 'border-green-200');
+                        button.classList.add('bg-rose-100', 'text-gray-800', 'border-rose-200');
+                        button.textContent = 'Private';
+                    }
+                }
+            });
+    }
+</script>
+{% endblock %}

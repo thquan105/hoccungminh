@@ -1,0 +1,18 @@
+{% extends "account/base_manage.html" %}
+{% block head_title %}Đăng xuất{% endblock %}
+{% load allauth i18n %}
+{% block content %}
+    <div class="custom-logout-page">
+        <h1>{% trans "Bạn có chắc chắn muốn đăng xuất không?" %}</h1>
+        <p>{% trans 'Nhấp vào Đăng xuất để xác nhận hoặc Hủy để duy trì trạng thái đăng nhập.' %}</p>
+        {% url 'account_logout' as action_url %}
+        <form method="post" action="{{ action_url }}">
+            {% csrf_token %}
+            {{ redirect_field }}
+            <button type="submit">{% trans "Đăng xuất" %}</button>
+            <button type="button" onclick="window.history.back();" class="button button-gray ml-1">
+                {% trans "Hủy" %}
+            </button>
+        </form>
+    </div>
+{% endblock content %}

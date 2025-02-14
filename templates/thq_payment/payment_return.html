@@ -1,0 +1,57 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Kết quả thanh toán{% endblock %}
+{% load static %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden text-center mt-10 md:p-0 p-4">
+    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+        <h2 class="text-2xl font-semibold text-white">{{ title }}</h2>
+    </div>
+    <div class="p-6">
+        <div class="space-y-4">
+            <p class="text-gray-700"><strong>Mã đơn hàng:</strong> {{ order_id }}</p>
+            <p class="text-gray-700"><strong>Mã giao dịch:</strong> {{ vnp_TransactionNo }}</p>
+            <p class="text-gray-700"><strong>Số tiền:</strong> {{ amount }}</p>
+            <p class="text-gray-700"><strong>Nội dung đơn hàng:</strong> {{ order_desc }}</p>
+
+            {% if vnp_ResponseCode == '00' %}
+            <p class="text-green-500 font-medium"><strong>Kết quả giao dịch:</strong> Thành công</p>
+            {% else %}
+            <p class="text-red-500 font-medium"><strong>Kết quả giao dịch:</strong> Lỗi</p>
+            {% endif %}
+
+            {% if msg %}
+            <p class="text-yellow-700 bg-yellow-100 border-l-4 border-yellow-500 p-4 rounded-md">
+                {{ msg }}
+            </p>
+            {% endif %}
+
+            <div class="mt-6">
+                <p class="text-gray-700">Trang sẽ tự động chuyển về trang chủ sau <span id="countdown"
+                        class="text-red-500 font-semibold">5</span> giây.</p>
+                <a id="homeButton" href="{% url 'home' %}"
+                    class="inline-block bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-600 transition duration-300">
+                    Trở về trang chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script>
+    let countdown = 5;
+    const countdownElement = document.getElementById('countdown');
+    const homeButton = document.getElementById('homeButton');
+
+    const interval = setInterval(function () {
+        countdown--;
+        countdownElement.textContent = countdown;
+        if (countdown === 0) {
+            clearInterval(interval);
+            window.location.href = '{% url "home" %}';
+        }
+    }, 1000); 
+</script>
+{% endblock %}

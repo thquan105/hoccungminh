@@ -1,0 +1,65 @@
+{% load static %}
+<header id="header" class="shadow bg-blue-500 sticky top-0 z-40">
+    <div class="w-full max-w-screen-2xl mx-auto p-4 md:py-8 flex items-center justify-between h-20 px-4 text-white">
+        <a class="flex items-center gap-2" href="/">
+            <img class="h-10 md:h-12" src="{% static 'images/logo.png' %}" alt="Logo" />
+            <span class="text-sm md:text-lg font-bold">HOCCUNGMINH</span>
+        </a>
+        {% if request.user.is_authenticated %}
+        <button id="menuButton" class="block md:hidden">
+            <svg id="menuIcon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="closeIcon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <nav id="navMenu"
+            class="hidden md:block absolute md:static top-20 right-0 w-full md:w-auto bg-blue-500 md:bg-transparent p-4 md:p-0 shadow md:shadow-none">
+            <ul class="flex flex-col md:flex-row items-center gap-4">
+                <li><a class="hover:underline {% if request.resolver_match.url_name == 'home' %}underline{% endif %}"
+                        href="{% url 'home' %}">Trang chủ</a></li>
+                <li><a class="hover:underline {% if request.resolver_match.url_name == 'chat_index' %}underline{% endif %}"
+                        href="{% url 'chat_index' %}">Chatbot</a></li>
+                <li><a class="hover:underline {% if request.resolver_match.url_name == 'test_index' %}underline{% endif %}"
+                        href="{% url 'test_index' %}">Kiểm tra</a></li>
+                <li><a class="hover:underline {% if request.resolver_match.url_name == 'practice_index' %}underline{% endif %}"
+                        href="{% url 'practice_index' %}">Luyện thi</a></li>
+                {% if request.user.profile.is_premium %}
+                <li><a class="hover:underline {% if request.resolver_match.url_name == 'writing_index' %}underline{% endif %}"
+                        href="{% url 'writing_index' %}">Luyện viết</a></li>
+                {% endif %}
+                <li x-data="{ dropdownOpen: false }" class="relative">
+                    <a @click="dropdownOpen = !dropdownOpen" @click.away="dropdownOpen = false"
+                        class="cursor-pointer select-none flex items-center gap-2 hover:underline">
+                        <img class="h-8 w-8 rounded-full object-cover bg-white" src="{{ request.user.profile.avatar }}"
+                            alt="Avatar" />
+                        {{ request.user.profile.name }}
+                        <img x-bind:class="dropdownOpen && 'rotate-180 duration-300'" class="w-4"
+                            src="https://img.icons8.com/small/32/ffffff/expand-arrow.png" alt="Dropdown" />
+                    </a>
+                    <div x-show="dropdownOpen" x-cloak
+                        class="absolute right-0 bg-white text-black shadow rounded-lg w-max p-2 z-20"
+                        x-transition:enter="duration-300 ease-out"
+                        x-transition:enter-start="opacity-0 -translate-y-5 scale-90"
+                        x-transition:enter-end="opacity-100 translate-y-0 scale-100">
+                        <ul class="hoverlist [&>li>a]:justify-end">
+                            <li><a href="{% url 'profile' %}">Trang cá nhân</a></li>
+                            <li><a href="{% url 'profile-edit' %}">Cập nhật thông tin</a></li>
+                            <li><a href="{% url 'profile-settings' %}">Cài đặt</a></li>
+                            <li><a href="{% url 'account_logout' %}">Đăng xuất</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        {% else %}
+        <ul class="flex md:flex-row items-center md:gap-4 gap-2 text-xs md:text-base">
+            <li><a class="hover:underline" href="{% url 'account_login' %}">Đăng nhập</a></li>
+            <li><a class="hover:underline" href="{% url 'account_signup' %}?next={% url 'profile-onboarding' %}">Đăng
+                    ký</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</header>

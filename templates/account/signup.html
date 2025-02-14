@@ -1,0 +1,29 @@
+{% extends "account/base_entrance.html" %}
+{% load i18n %}
+{% load allauth account %}
+
+{% block head_title %}
+    {% trans "Đăng ký" %}
+{% endblock head_title %}
+
+{% block content %}
+    {% element h1 %}
+        {% trans "Đăng ký" %}
+    {% endelement %}
+    <p>
+        Nếu bạn đã có tài khoản, vui lòng chọn
+    <a href="{% url 'account_login' %}">đăng nhập</a>.
+    </p>
+    {% element form form=form method="post" %}
+        {% slot body %}
+            {% csrf_token %}
+            {% element fields form=form unlabeled=True %}
+            {% endelement %}
+        {% endslot %}
+        {% slot actions %}
+            {% element button type="submit" %}
+                {% trans "Đăng ký" %}
+            {% endelement %}
+        {% endslot %}
+    {% endelement %}
+{% endblock content %}

@@ -1,0 +1,124 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Trang chủ{% endblock %}
+{% load static %}
+{% block content %}
+
+<section class="relative h-screen pt-16 bg-cover bg-center bg-[url('{% static 'images/bg_home.jpg' %}')]">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative container mx-auto px-6 h-full flex items-center">
+        <div class="text-white max-w-2xl">
+            <h1 class="text-4xl font-bold mb-6">Chinh phục tiếng Anh, cơ hội rộng mở.</h1>
+            <p class="text-xl mb-8">Nâng cao kỹ năng tiếng Anh của bạn ngay bây giờ.</p>
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">Bắt
+                đầu ngay</button>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-3 gap-12">
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Hiệu quả</h3>
+                <p class="text-gray-600">Học tiếng Anh mọi lúc, mọi nơi với tốc độ truy cập nhanh và hiệu quả nhất.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">An toàn</h3>
+                <p class="text-gray-600">Bảo mật tuyệt đối giúp bạn yên tâm trong từng phút học tập.</p>
+            </div>
+            <div class="text-center">
+                <div class="bg-blue-100 rounded-full p-6 w-20 h-20 mx-auto mb-6 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z">
+                        </path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-4">Tiện lợi</h3>
+                <p class="text-gray-600">Truy cập bài học từ bất kỳ thiết bị nào, mọi lúc, mọi nơi.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-blue-500 text-white">
+    <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-4 gap-12 text-center">
+            <div>
+                <p class="text-4xl font-bold mb-2">1000+</p>
+                <p>Hơn 1000 học viên đã tin tưởng và sử dụng.</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold mb-2">5+</p>
+                <p>Đồng hành cùng bạn trên hành trình học tiếng Anh chuyên nghiệp.</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold mb-2">24/7</p>
+                <p>Đội ngũ hỗ trợ sẵn sàng giải đáp mọi thắc mắc bất kỳ lúc nào.</p>
+            </div>
+            <div>
+                <p class="text-4xl font-bold mb-2">99.9%</p>
+                <p>Cam kết chất lượng với thời gian hoạt động gần như hoàn hảo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="border rounded-lg p-8 text-center">
+                <h3 class="text-2xl font-bold mb-4">Miễn phí</h3>
+                <p class="text-4xl font-bold mb-6">O Đồng</p>
+                <ul class="mb-8 space-y-4">
+                    <li>2 lượt tạo bài kiểm tra 1 ngày</li>
+                    <li>Trò chuyện Chatbot</li>
+                    <li>Làm kiểm tra, luyện tập</li>
+                </ul>
+                {% if request.user.is_authenticated %}
+                <button class="w-full bg-gray-400 text-white py-2 rounded-lg transition duration-300">Đã sở hữu</button>
+                {% else %}
+                <a href="{% url 'account_login' %}" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 block text-center">
+                    Sở hữu ngay
+                </a>
+                {% endif %}
+            </div>
+            <div class="border rounded-lg p-8 text-center bg-blue-50 border-blue-200">
+                <h3 class="text-2xl font-bold mb-4">Chuyên nghiệp</h3>
+                <p class="text-4xl font-bold mb-6">25.000 Đồng<span class="text-lg text-gray-600">/tháng</span></p>
+                <ul class="mb-8 space-y-4">
+                    <li>Không giới hạn tạo bài kiểm tra</li>
+                    <li>Nổi bậc tài khoản</li>
+                    <li>Luyện tập viết với AI</li>
+                </ul>
+                {% if request.user.profile.is_premium %}
+                <button class="w-full bg-gray-400 text-white py-2 rounded-lg transition duration-300">Đã sở hữu</button>
+                {% else %}
+                <form action="{% url 'upgrade_account' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"
+                        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Sở hữu ngay
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% include 'includes/footer.html' %}
+{% endblock %}

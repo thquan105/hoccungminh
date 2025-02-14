@@ -1,0 +1,8 @@
+.env
+venv/
+Dockerfile
+migrations/
+!migrations/__init__.py
+__pycache__/
+db.sqlite3
+.DS_Store

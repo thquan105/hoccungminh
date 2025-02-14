@@ -1,0 +1,34 @@
+name: hoc-cung-minh
+
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: my-app-image
+    container_name: my-app-container
+    env_file:
+      - ./thq_core/.env
+    command: /app/entrypoint.sh
+    ports:
+      - "8001:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres
+    container_name: my-postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

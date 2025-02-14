@@ -1,0 +1,207 @@
+{% extends 'layouts/blank.html' %}
+{% load static %}
+{% block head_title %}Kiểm tra{% endblock %}
+{% block content %}
+<div class="h-[calc(100vh-80px)] pt-4 px-8 bg-white">
+    <div class="flex items-center justify-between bg-white rounded-md mb-4">
+        <a class="px-4 py-2 mr-8 bg-blue-500 rounded-3xl text-white hover:bg-blue-700" href="{% url 'test_index' %}"><i
+                class="fa-solid fa-angle-left"></i></a>
+        <div>
+            <h1 class="text-base md:text-lg font-semibold mb-0">{{ deThi.tenDeThi }}</h1>
+            <p class="text-sm mb-0 text-center">Tạo bởi: @{{ deThi.nguoiTao }}</p>
+        </div>
+        <p class="text-sm md:text-lg mb-0 mr-4 font-bold" id="quiz-result"></p>
+    </div>
+    <div class="flex flex-col md:flex-row p-4 gap-6 mx-auto">
+        {% if deThi.doanVan %}
+        <div class="w-full md:w-5/12 text-justify">
+            <div class="pr-2 overflow-y-auto max-h-[70vh]">
+                <p class="text-sm md:text-base" translate="no"><label>&nbsp;&nbsp;&nbsp;&nbsp;</label>{{ deThi.doanVan }}</p>
+            </div>
+        </div>
+        {% endif %}
+        <div class="w-full md:w-5/12 flex-1 bg-white rounded-lg shadow-lg md:p-6 p-0">
+            <form id="examForm" class="space-y-8">
+                <div id="question_blocks" class="overflow-y-auto max-h-[60vh]">
+                    {% for cauHoi in cauHois %}
+                    <div id="{{ cauHoi.cauHoi_id }}" class="question_block p-0 md:p-6 bg-gray-50 rounded-lg mb-4 mr-2">
+                        <h2 class="text-sm md:text-lg font-semibold text-gray-700 mb-4">{{ forloop.counter }}.
+                            {{cauHoi.noiDung }}
+                        </h2>
+                        <div class="space-y-3">
+                            <label
+                                class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 transition-colors cursor-pointer">
+                                <input type="radio" name="{{ cauHoi.cauHoi_id }}" value="A"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500" required>
+                                <span class="ml-3 text-gray-700 md:text-base text-sm">{{ cauHoi.dapAnA }}</span>
+                            </label>
+                            <label
+                                class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 transition-colors cursor-pointer">
+                                <input type="radio" name="{{ cauHoi.cauHoi_id }}" value="B"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-3 text-gray-700 md:text-base text-sm">{{ cauHoi.dapAnB }}</span>
+                            </label>
+                            <label
+                                class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 transition-colors cursor-pointer">
+                                <input type="radio" name="{{ cauHoi.cauHoi_id }}" value="C"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-3 text-gray-700 md:text-base text-sm">{{ cauHoi.dapAnC }}</span>
+                            </label>
+                            <label
+                                class="flex items-center p-3 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 transition-colors cursor-pointer">
+                                <input type="radio" name="{{ cauHoi.cauHoi_id }}" value="D"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <span class="ml-3 text-gray-700 md:text-base text-sm">{{ cauHoi.dapAnD }}</span>
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    data-question-id="{{ cauHoi.cauHoi_id }}">Nộp bài
+                </button>
+            </form>
+        </div>
+        <div
+            class="w-full md:w-2/12 md:order-none order-first bg-white rounded-lg shadow-lg p-6 h-fit sticky md:top-20 top-0">
+            <div class="mb-6">
+                <h2 class="hidden md:block text-xl font-bold text-gray-800 mb-4">Câu hỏi</h2>
+                <div class="bg-blue-100 text-blue-800 px-4 py-2 rounded-lg mb-4">
+                    <span class="font-medium">Thời gian:</span>
+                    <span id="timer" class="ml-2 font-bold">N/A:N/A</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-4">Số câu: <strong id="soCauHoi">{{ cauHois|length }}</strong> câu
+                </p>
+            </div>
+            <div class="grid grid-cols-5 gap-3">
+                {% for cauHoi in cauHois %}
+                <button
+                    class="question-btn w-10 h-10 rounded-lg bg-gray-400 text-white font-medium hover:bg-blue-600 transition-colors transform hover:scale-105"
+                    data-question-id="{{ cauHoi.cauHoi_id }}">
+                    {{ forloop.counter }}
+                </button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    let timeLeft = '{{ deThi.thoiGian }}' * 60;
+    const timerDisplay = document.getElementById('timer');
+    const examForm = document.getElementById('examForm');
+    const submitButton = examForm.querySelector('button[type="submit"]');
+    const timer = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            examForm.submit();
+        }
+    }, 1000);
+
+    examForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        clearInterval(timer);
+        submitButton.remove();
+
+        const questionBlocks = document.getElementById('question_blocks');
+        questionBlocks.scrollTop = 0;
+
+        const formData = new FormData(event.target);
+        const userAnswers = [];
+        const cauHoiIds = [];
+
+        formData.forEach((value, key) => {
+            userAnswers.push(value);
+            cauHoiIds.push(key);
+        });
+
+        fetch('submit-test/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                cauHoi_ids: cauHoiIds,
+                dapAnChon: userAnswers,
+            }),
+        })
+            .then(response => response.json())
+            .then(data => {
+                const { results, total_correct, total_questions } = data;
+
+                results.forEach(result => {
+                    const questionBlock = document.querySelector(`div[id="${result.cauHoi_id}"]`).closest('.question_block');
+                    const button_question = document.querySelector(`button[data-question-id="${result.cauHoi_id}"]`);
+                    const label_correct = questionBlock.querySelector(`input[value="${result.correct_answer}"]`).closest('label');
+                    const resultDiv = document.createElement('div');
+
+                    if (result.is_correct) {
+                        label_correct.classList.add('bg-green-100', 'border-green-200');
+                        button_question.classList.remove('bg-gray-400');
+                        button_question.classList.add('bg-green-500');
+                        resultDiv.innerHTML = `
+                <p class="font-semibold text-green-600 mt-4">ĐÚNG!</p>
+                <p><strong>Đáp án đúng:</strong> ${result.correct_answer}</p>
+                <p><strong>Giải thích:</strong> ${result.explanation}</p>
+            `;
+                    } else {
+                        label_correct.classList.add('bg-red-100', 'border-red-200');
+                        button_question.classList.remove('bg-gray-400');
+                        button_question.classList.add('bg-red-500');
+                        resultDiv.innerHTML = `
+                <p class="font-semibold text-red-600 mt-4">SAI!</p>
+                <p><strong>Đáp án đúng:</strong> ${result.correct_answer}</p>
+                <p><strong>Giải thích:</strong> ${result.explanation}</p>
+            `;
+                    }
+
+                    questionBlock.appendChild(resultDiv);
+
+                    document.querySelectorAll('.question_block').forEach((block) => {
+                        block.style.pointerEvents = 'none';
+                        block.style.transition = 'none';
+                    });
+                });
+
+                const totalResultDiv = document.getElementById('quiz-result');
+                totalResultDiv.innerText = `ĐÚNG: ${total_correct} / ${total_questions} câu!`;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const questionButtons = document.querySelectorAll('.question-btn');
+        const radioButtons = document.querySelectorAll('input[type="radio"]');
+
+        questionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const questionId = button.getAttribute('data-question-id');
+                const questionElement = document.getElementById(questionId);
+
+                questionElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    const questionId = radio.name;
+                    const button = document.querySelector(`button[data-question-id="${questionId}"]`);
+
+                    button.classList.add('bg-blue-500');
+                    button.classList.remove('bg-gray-400');
+
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

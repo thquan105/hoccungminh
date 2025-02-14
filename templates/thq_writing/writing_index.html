@@ -1,0 +1,53 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Luyện viết{% endblock %}
+{% load static %}
+{% block content %}
+<div class="w-full max-w-screen-2xl mx-auto mb-5" style="display: block;">
+    <div class="flex flex-col mt-10 p-6">
+        <div class="flex flex-col text-left pb-2 text-center">
+            <p class="text-xl" style="font-weight: 600;">Luyện viết thông minh</p>
+            <p class="text-sm text-gray-500 mt-1 mb-2">Công cụ chấm bài viết, đưa lời nhận xét và các cải tiến của các câu trong bài viết</p>
+        </div>
+        <form id="writing-form" action="{%  url 'writing_evaluate' %}" method="POST" class="space-y-4 mb-5" style="display: block;">
+            {% csrf_token %}
+            <div class="flex flex-col">
+                <div class="relative">
+                    <div class="relative" style="position: relative;"><textarea id="writing-input" name="inputText" placeholder="Nhập bài văn ở đây..."
+                            class="w-full text-sm md:text-base p-5 border rounded-lg resize-none whitespace-pre-wrap mb-2 bg-gray-900 text-white z-10 relative overflow-hidden"
+                            style="height: auto; min-height: 12rem; overflow-y: auto;" required></textarea>
+                    </div>
+                    <div class="flex gap-1 items-center justify-between" style="display: flex;"><button type="submit"
+                            class="hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm md:text-base"
+                            style="background-color: rgb(13, 110, 253);">Nộp bài</button>
+                        <p id="word-count" class="text-sm text-gray-500">Máy đếm từ: 0</p>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}
+{% block javascript %}
+<script>
+    const form = document.getElementById('writing-form');
+    const textarea = document.getElementById('writing-input');
+
+    textarea.addEventListener('input', function () {
+        const text = this.value.trim();
+        const wordCount = text ? text.split(/\s+/).length : 0;
+        document.getElementById('word-count').textContent = `Máy đếm từ: ${wordCount}`;
+    });
+
+    form.addEventListener('submit', function(event) {
+        const inputText = textarea.value.trim();
+        showLoading();
+        
+        if (inputText.length < 10) {
+            event.preventDefault();
+            alert('Vui lòng nhập ít nhất 10 từ để gửi bài viết.');
+            hideLoading();  
+        }
+    });
+</script>
+{% endblock %}

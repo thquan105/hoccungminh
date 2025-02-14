@@ -1,0 +1,32 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Lịch sử{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="flex max-w-screen-2xl mx-auto">
+    <div class="w-full mt-10 p-10">
+        <h1 class="text-base md:text-2xl text-center font-bold mb-10">Danh sách kiểm tra đã thực hiện</h1>
+        <ul class="p-4 rounded-lg overflow-hidden overflow-y-auto max-h-[60vh] mx-auto">
+            {% for ketQua in ketQuas %}
+            <li class="mb-2 shadow rounded-md">
+                <a href="{% url 'test_result' ketQua.ketQua_id %}" class="flex flex-col md:flex-row justify-between items-center text-lg bg-white text-black  hover:bg-gray-200 border-l-8 {% cycle 'border-teal-500' 'border-amber-400' %} rounded-md px-3 py-2">
+                    <div class="flex-grow w-full">
+                        <span class="text-sm md:text-base font-medium">{{ ketQua.tenDeThi }}</span>
+                        <div class="text-gray-500 font-thin text-xs md:text-sm pt-1">
+                            <span>Tạo bởi: @{{ ketQua.tenNguoiTao }}</span>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/4 flex flex-col">
+                        <span class="text-sm md:text-base"><strong>Thời gian:</strong> {{ ketQua.ngayTao|date:" H:i d-m-Y" }}</span>
+                        <span class="text-sm md:text-base"><strong>Điểm:</strong> {{ ketQua.diemSo }}/100</span>
+                    </div>
+                </a>
+            </li>
+            {% empty %}
+            <li class="text-center">Bạn chưa thực hiện bài kiểm tra nào!</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}

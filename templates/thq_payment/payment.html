@@ -1,0 +1,63 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Chi tiết thanh toán{% endblock %}
+{% load static %}
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden text-center mt-10 md:p-0 p-4">
+    <div class="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+        <h2 class="text-2xl font-semibold text-white">Chi tiết thanh toán</h2>
+    </div>
+    <image src="{% static 'images/logo-pay.jpg' %}" alt="VN PAY" class="h-36 object-cover object-center justify-self-center"/>
+    <div class="overflow-x-auto">
+        <form action="{% url 'payment' %}" id="create_form" method="post" class="space-y-4  mb-8">
+            <div class="form-group">
+                <label for="language" class="block text-sm font-medium mt-8 text-gray-700">Loại hàng hóa: Thanh toán hóa
+                    đơn</label>
+            </div>
+            <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700">Mã hóa đơn: {% now 'YmdHis' %}</label>
+                <input class="hidden" name="order_id" type="text" value="{% now 'YmdHis' %}" />
+            </div>
+            <div class="form-group">
+                <label for="amount" class="block text-sm font-medium text-gray-700">Số tiền: 25.000 VNĐ</label>
+            </div>
+            <div class="form-group">
+                <label for="order_desc" class="block text-sm font-medium text-gray-700">Nội dung thanh toán: Nâng cấp tài khoản</label>
+            </div>
+            <div class="form-group flex items-center justify-center">
+                <label for="bank_code" class="block text-sm font-medium text-gray-700 mr-4">Ngân hàng: </label>
+                <select name="bank_code" id="bank_code"
+                    class="block mt-4 px-4 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                    required>
+                    <option value="">Không chọn</option>
+                    <option value="NCB">Ngan hang NCB</option>
+                    <option value="AGRIBANK">Ngan hang Agribank</option>
+                    <option value="SCB">Ngan hang SCB</option>
+                    <option value="SACOMBANK">Ngan hang SacomBank</option>
+                    <option value="EXIMBANK">Ngan hang EximBank</option>
+                    <option value="MSBANK">Ngan hang MSBANK</option>
+                    <option value="NAMABANK">Ngan hang NamABank</option>
+                    <option value="VNMART">Vi dien tu VnMart</option>
+                    <option value="VIETINBANK">Ngan hang Vietinbank</option>
+                    <option value="VIETCOMBANK">Ngan hang VCB</option>
+                    <option value="HDBANK">Ngan hang HDBank</option>
+                    <option value="DONGABANK">Ngan hang Dong A</option>
+                    <option value="TPBANK">Ngân hàng TPBank</option>
+                    <option value="OJB">Ngân hàng OceanBank</option>
+                    <option value="BIDV">Ngân hàng BIDV</option>
+                    <option value="TECHCOMBANK">Ngân hàng Techcombank</option>
+                    <option value="VPBANK">Ngan hang VPBank</option>
+                    <option value="MBBANK">Ngan hang MBBank</option>
+                    <option value="ACB">Ngan hang ACB</option>
+                    <option value="OCB">Ngan hang OCB</option>
+                    <option value="IVB">Ngan hang IVB</option>
+                    <option value="VISA">Thanh toan qua VISA/MASTER</option>
+                </select>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Thanh
+                toán</button>
+            {% csrf_token %}
+        </form>
+    </div>
+</div>
+{% include 'includes/footer-mini.html' %}
+{% endblock %}

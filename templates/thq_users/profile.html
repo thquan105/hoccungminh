@@ -1,0 +1,158 @@
+{% extends 'layouts/blank.html' %}
+{% block head_title %}Trang cá nhân{% endblock %}
+{% load static %}
+
+{% block content %}
+<div class="w-full mx-auto flex flex-col items-center pt-20 px-4">
+    <img class="w-36 h-36 rounded-full object-cover mb-4" src="{{ profile.avatar }}" />
+    <div class="max-w-lg text-center">
+        <div class="flex items-center justify-center gap-2">
+            <h1>{{ profile.name }}</h1>{% if profile.is_premium %}<span><img class="w-8 h-8 mb-1"
+                    src="{% static 'images/icon/ico-tick.svg' %}" /></span>{% endif %}
+        </div>
+        <div class="text-gray-400 mb-2 -mt-3">@{{ profile.user.username }}</div>
+        <div class="text-gray-400 mb-2">{{ profile.user.email }}</div>
+        {% if profile.info %}
+        <div class="hyphens-auto">{{ profile.info|linebreaksbr }}</div>
+        {% endif %}
+    </div>
+    <div class="max-w-5xl rounded p-6 flex flex-wrap justify-center">
+        <div class="w-full mb-10 flex flex-col md:flex-row flex-wrap gap-[16px] justify-center">
+            <div id="chart1" class="w-[calc(50%-16px)]">
+                <div class="text-base md:text-lg font-semibold mb-4">Thống kê: Điểm Trung Bình</div>
+                <div class="bg-indigo-500 p-5 rounded-lg">
+                    <canvas id="lineChart" class="w-full"></canvas>
+                </div>
+            </div>
+            <div id="chart2" class="w-[calc(50%-16px)]">
+                <div class="text-base md:text-lg font-semibold mb-4">Thống kê: Số lần thi theo ngày</div>
+                <div class="bg-blue-500 p-5 rounded-lg">
+                    <canvas id="heatmap" class="w-full"></canvas>
+                </div>
+            </div>
+        </div>
+        <div id="chart3">
+            <h2 class="text-base md:text-lg font-semibold mb-4">Thống kê: Phân khúc điểm</h2>
+            <div class="bg-green-500 p-5 rounded-lg">
+                <canvas id="pieChart" class="w-full"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const lineData = JSON.parse('{{ line_data|safe }}');
+    const heatmapData = JSON.parse('{{ heatmap_data|safe }}');
+    const pieData = JSON.parse('{{ pie_chart_data|safe }}');
+    // Line Chart Configuration
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    new Chart(lineCtx, {
+        type: 'line',
+        data: {
+            labels: lineData.labels,
+            datasets: [{
+                label: 'Điểm trung bình',
+                data: lineData.scores,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                tension: 0.4,
+                pointBackgroundColor: 'rgba(255, 255, 255, 1)',
+                pointRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true, position: 'top', labels: { color: '#fff' } },
+                tooltip: { enabled: true },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#fff' },
+                    title: { display: true, text: 'Ngày', color: '#fff' }
+                },
+                y: {
+                    ticks: { color: '#fff' },
+                    title: { display: true, text: 'Điểm trung bình', color: '#fff' }
+                }
+            }
+        }
+    });
+
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: pieData.labels,
+            datasets: [{
+                label: 'Số bài thi',
+                data: pieData.counts,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',  // Màu cho "Thấp"
+                    'rgba(54, 162, 235, 0.6)',  // Màu cho "Trung Bình"
+                    'rgba(75, 192, 192, 0.6)',  // Màu cho "Cao"
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: { color: '#fff' }
+                }
+            }
+        }
+    });
+
+    // Heatmap Configuration
+    const heatmapCtx = document.getElementById('heatmap').getContext('2d');
+    const heatmapLabels = Object.keys(heatmapData);
+    const heatmapValues = Object.values(heatmapData);
+
+    new Chart(heatmapCtx, {
+        type: 'bar',
+        data: {
+            labels: heatmapLabels,
+            datasets: [{
+                label: 'Số bài thi',
+                data: heatmapValues,
+                backgroundColor: heatmapLabels.map(() => 'rgba(75, 192, 192, 0.6)'),
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    ticks: { color: '#fff' },
+                    title: { display: true, text: 'Ngày', color: '#fff' }
+                },
+                y: {
+                    ticks: { color: '#fff' },
+                    title: { display: true, text: 'Số bài thi', color: '#fff' }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: true }
+            }
+        }
+    });
+</script>
+{% endblock %}
